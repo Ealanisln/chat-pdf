@@ -7,7 +7,6 @@ import {
   RecursiveCharacterTextSplitter,
 } from "@pinecone-database/doc-splitter";
 import { getEmbeddings } from "./embeddings";
-import { convertToAscii } from "./utils";
 
 export const getPineconeClient = () => {
   return new Pinecone({
@@ -24,29 +23,28 @@ type PDFPage = {
 };
 
 export async function loadS3IntoPinecone(fileKey: string) {
-  // 1. obtain the pdf -> downlaod and read from pdf
+  // Get a pdf -> download and read from pdf
   console.log("downloading s3 into file system");
   const file_name = await downloadFromS3(fileKey);
-  if (!file_name) {
-    throw new Error("could not download from s3");
-  }
-  console.log("loading pdf into memory" + file_name);
+  if (!file_name) throw new Error("could not download file from s3");
   const loader = new PDFLoader(file_name);
   const pages = (await loader.load()) as PDFPage[];
 
-  // 2. split and segment the pdf
+  // Split and segment the pdf
+
   const documents = await Promise.all(pages.map(prepareDocument));
 
-  // 3. vectorise and embed individual documents
   const vectors = await Promise.all(documents.flat().map(embedDocument));
 
-  // 4. upload to pinecone
   const client = await getPineconeClient();
-  const pineconeIndex = await client.index("chatpdf");
-  const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
+  const pineconeIndex = client.Index("charla-pdf");
 
-  console.log("inserting vectors into pinecone");
-  await namespace.upsert(vectors);
+  console.log("Inserting vectors into pinecone");
+
+  // Directly provide the vectors as an array of PineconeRecord
+  await pineconeIndex.upsert(vectors);
+
+  console.log("Inserted vectors into pinecone");
 
   return documents[0];
 }
@@ -55,6 +53,7 @@ async function embedDocument(doc: Document) {
   try {
     const embeddings = await getEmbeddings(doc.pageContent);
     const hash = md5(doc.pageContent);
+    console.log("getEmbeddings called with:", doc.pageContent);
 
     return {
       id: hash,
