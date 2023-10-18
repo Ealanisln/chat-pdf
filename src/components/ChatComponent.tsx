@@ -45,7 +45,7 @@ const ChatComponent = ({ chatId }: Props) => {
     >
       {/* header */}
       <div className="sticky top-0 inset-x-0 p-2 bg-white h-fit">
-        <h3 className="text-xl font-bold">Chat</h3>
+        <h3 className="text-xl font-bold">Conversación</h3>
       </div>
 
       {/* message list */}
@@ -59,10 +59,10 @@ const ChatComponent = ({ chatId }: Props) => {
           <Input
             value={input}
             onChange={handleInputChange}
-            placeholder="Ask any question..."
+            placeholder="Realiza una pregunta..."
             className="w-full"
           />
-          <Button className="bg-blue-600 ml-2">
+          <Button className="bg-purple-600 ml-2">
             <Send className="h-4 w-4" />
           </Button>
         </div>

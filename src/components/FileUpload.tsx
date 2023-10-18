@@ -45,16 +45,16 @@ const FileUpload = () => {
         const data = await uploadToS3(file);
         console.log("meow", data);
         if (!data?.file_key || !data.file_name) {
-          toast.error("Something went wrong");
+          toast.error("Ups, algo salio mal.");
           return;
         }
         mutate(data, {
           onSuccess: ({ chat_id }) => {
-            toast.success("Chat created!");
+            toast.success("Chat creado!");
             router.push(`/chat/${chat_id}`);
           },
           onError: (err) => {
-            toast.error("Error creating chat");
+            toast.error("Error creando el chat");
             console.error(err);
           },
         });

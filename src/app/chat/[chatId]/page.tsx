@@ -32,7 +32,8 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
   const isPro = await checkSubscription();
 
   return (
-    <div className="flex max-h-screen overflow-scroll">
+    <div className="h-full">
+    <div className="flex max-h-screen overflow-auto">
       <div className="flex w-full max-h-screen overflow-scroll">
         {/* chat sidebar */}
         <div className="flex-[1] max-w-xs">
@@ -46,6 +47,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
         <div className="flex-[3] border-l-4 border-l-slate-200">
           <ChatComponent chatId={parseInt(chatId)} />
         </div>
+      </div>
       </div>
     </div>
   );
