@@ -11,9 +11,9 @@ export async function getMatchesFromEmbeddings(
       environment: process.env.PINECONE_ENVIRONMENT!,
       apiKey: process.env.PINECONE_API_KEY!,
     });
-    const pineconeIndex = await client.index("chatpdf");
-    const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
-    const queryResult = await namespace.query({
+    const pineconeIndex = await client.index("charla-pdf");
+    // No need to specify the namespace here
+    const queryResult = await pineconeIndex.query({
       topK: 5,
       vector: embeddings,
       includeMetadata: true,
@@ -24,6 +24,7 @@ export async function getMatchesFromEmbeddings(
     throw error;
   }
 }
+
 
 export async function getContext(query: string, fileKey: string) {
   const queryEmbeddings = await getEmbeddings(query);
