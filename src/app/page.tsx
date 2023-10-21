@@ -25,16 +25,18 @@ export default async function Home() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center">
-            <h1 className="mr-3 text-5xl font-semibold">Conversa con cualquier PDF!</h1>
+            <h1 className="mr-3 text-5xl font-semibold">
+              ¡Conversa con cualquier PDF!
+            </h1>
             <UserButton afterSignOutUrl="/" />
           </div>
 
-          <div className="flex mt-2">
+          <div className="flex py-6">
             {isAuth && firstChat && (
               <>
                 <Link href={`/chat/${firstChat.id}`}>
                   <Button>
-                    Ir a los chats <ArrowRight className="ml-2" />
+                    Ir a mis conversaciones <ArrowRight className="ml-2" />
                   </Button>
                 </Link>
                 <div className="ml-3">
@@ -44,7 +46,7 @@ export default async function Home() {
             )}
           </div>
 
-          <p className="max-w-xl mt-1 text-lg text-slate-600">
+          <p className="max-w-xl mt-1 text-lg text-slate-600 pb-4">
             Únete a millones de estudiantes, investigadores y profesionales para
             responder instantáneamente preguntas y comprender mejor la
             investigación con la ayuda de la inteligencia artificial.
@@ -56,7 +58,7 @@ export default async function Home() {
             ) : (
               <Link href="/sign-in">
                 <Button>
-                  Inicia sesion para iniciar!
+                  Inicia sesion para iniciar
                   <LogIn className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
