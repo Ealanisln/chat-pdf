@@ -42,12 +42,12 @@ export async function GET() {
       line_items: [
         {
           price_data: {
-            currency: "USD",
+            currency: "MXN",
             product_data: {
-              name: "ChatPDF Pro",
-              description: "Unlimited PDF sessions!",
+              name: "CharlaPDF Pro",
+              description: "Obtén PDF ilimitados!",
             },
-            unit_amount: 2000,
+            unit_amount: 15000,
             recurring: {
               interval: "month",
             },

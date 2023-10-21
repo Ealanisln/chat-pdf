@@ -5,6 +5,8 @@ import React from "react";
 import { Button } from "./ui/button";
 import { MessageCircle, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import axios from "axios";
+import SubscriptionButton from "./SubscriptionButton";
 
 type Props = {
   chats: DrizzleChat[];
@@ -12,8 +14,19 @@ type Props = {
   isPro: boolean;
 };
 
-const ChatSideBar = ({ chats, chatId }: Props) => {
+const ChatSideBar = ({ chats, chatId, isPro }: Props) => {
   const [loading, setLoading] = React.useState(false);
+  const handleSubscription = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/stripe");
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="w-full h-screen p-4 text-gray-200 bg-gray-900">
@@ -24,7 +37,7 @@ const ChatSideBar = ({ chats, chatId }: Props) => {
         </Button>
       </Link>
 
-      <div className="flex max-h-screen overflow-scroll pb-20 flex-col gap-2 mt-4">
+      <div className="flex max-h-screen pb-20 flex-col gap-2 mt-4">
         {chats.map((chat) => (
           <Link key={chat.id} href={`/chat/${chat.id}`}>
             <div
@@ -42,12 +55,15 @@ const ChatSideBar = ({ chats, chatId }: Props) => {
         ))}
       </div>
 
-      {/* <div className="absoulte bottom-8 left-4">
-        <div className="flex items-center gap-2 text-sm text-slate-500 flew-wrap">
-          <Link href="/">Home</Link>
-          <Link href="/">Source</Link>
+      <div className="fixed bottom-4 left-4">
+        <div className="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
+          <Link href="/">Inicio</Link>
+          <Link href="/">Recursos</Link>
         </div>
-      </div> */}
+        <div className="pt-4">
+          <SubscriptionButton isPro={isPro} />
+        </div>
+      </div>
     </div>
   );
 };
