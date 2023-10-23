@@ -26,8 +26,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "dotenv": "^16.3.1",
-    "drizzle-kit": "^0.19.13",
-    "drizzle-orm": "^0.28.5",
+    "drizzle-orm": "^0.28.6",
     "encoding": "^0.1.13",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
@@ -50,5 +49,8 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.19.13"
   }
 }
