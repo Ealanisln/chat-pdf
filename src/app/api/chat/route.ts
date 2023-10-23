@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { chats, messages as _messages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import { increaseApiLimit } from "@/lib/api-limit";
 
 export const runtime = "edge";
 
@@ -42,6 +43,12 @@ export async function POST(req: Request) {
       `,
     };
 
+    const freeTrial = await increaseApiLimit();
+
+    if (!freeTrial) {
+      return new NextResponse("Free trial has expired", { status: 403 });
+    }
+
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
@@ -50,6 +57,9 @@ export async function POST(req: Request) {
       ],
       stream: true,
     });
+
+    await increaseApiLimit();
+    
     const stream = OpenAIStream(response, {
       onStart: async () => {
         // save user message into db

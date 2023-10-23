@@ -44,5 +44,13 @@ export const userSubscriptions = pgTable("user_subscriptions", {
   stripeCurrentPeriodEnd: timestamp("stripe_current_period_ended_at"),
 });
 
+export const userUsage = pgTable("user_usage", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id", { length: 256 }).notNull(),
+  usageCount: integer("usage_count").notNull().default(0),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(), 
+});
+
 // drizzle-orm
 // drizzle-kit
