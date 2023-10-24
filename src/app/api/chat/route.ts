@@ -9,6 +9,7 @@ import { increaseApiLimit } from "@/lib/api-limit";
 
 export const runtime = "edge";
 
+
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -79,5 +80,8 @@ export async function POST(req: Request) {
       },
     });
     return new StreamingTextResponse(stream);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  } 
+
 }

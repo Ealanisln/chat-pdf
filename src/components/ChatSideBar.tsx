@@ -1,4 +1,5 @@
 "use client";
+
 import { DrizzleChat } from "@/lib/db/schema";
 import Link from "next/link";
 import React from "react";
@@ -7,14 +8,16 @@ import { MessageCircle, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import SubscriptionButton from "./SubscriptionButton";
+import FreeCounter from "./FreeCounter";
 
 type Props = {
   chats: DrizzleChat[];
   chatId: number;
   isPro: boolean;
+  apiLimitCount: number;
 };
 
-const ChatSideBar = ({ chats, chatId, isPro }: Props) => {
+const ChatSideBar = ({ chats, chatId, isPro, apiLimitCount = 0 }: Props) => {
   const [loading, setLoading] = React.useState(false);
   const handleSubscription = async () => {
     try {
@@ -56,7 +59,7 @@ const ChatSideBar = ({ chats, chatId, isPro }: Props) => {
       </div>
 
       <div className="fixed bottom-4 left-4">
-        <div className="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
+        <div className="flex items-center gap-2 text-sm stext-slate-500 flex-wrap">
           <Link href="/">Inicio</Link>
           <Link href="/">Recursos</Link>
         </div>
@@ -64,6 +67,9 @@ const ChatSideBar = ({ chats, chatId, isPro }: Props) => {
           <SubscriptionButton isPro={isPro} />
         </div>
       </div>
+      <FreeCounter 
+        apiLimitCount={apiLimitCount}
+      />
     </div>
   );
 };
