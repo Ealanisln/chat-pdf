@@ -5,10 +5,9 @@ import { db } from "@/lib/db";
 import { chats, messages as _messages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { increaseApiLimit } from "@/lib/api-limit";
+import { checkApiLimit, increaseApiLimit } from "@/lib/api-limit";
 
 export const runtime = "edge";
-
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -44,7 +43,7 @@ export async function POST(req: Request) {
       `,
     };
 
-    const freeTrial = await increaseApiLimit();
+    const freeTrial = await checkApiLimit();
 
     if (!freeTrial) {
       return new NextResponse("Free trial has expired", { status: 403 });
