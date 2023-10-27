@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { chats, messages as _messages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { checkApiLimit, increaseApiLimit } from "@/lib/api-limit";
+import { increaseApiLimit } from "@/lib/api-limit";
 
 export const runtime = "edge";
 
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       `,
     };
 
-    const freeTrial = await checkApiLimit();
+    const freeTrial = await increaseApiLimit();
 
     if (!freeTrial) {
       return new NextResponse("Free trial has expired", { status: 403 });
@@ -58,8 +58,6 @@ export async function POST(req: Request) {
       stream: true,
     });
 
-    await increaseApiLimit();
-    
     const stream = OpenAIStream(response, {
       onStart: async () => {
         // save user message into db
@@ -81,6 +79,5 @@ export async function POST(req: Request) {
     return new StreamingTextResponse(stream);
   } catch (error) {
     console.log(error);
-  } 
-
+  }
 }

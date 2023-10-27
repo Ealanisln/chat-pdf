@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { useChat } from "ai/react";
 import { Button } from "./ui/button";
@@ -29,6 +29,8 @@ const ChatComponent = ({ chatId }: Props) => {
     },
     initialMessages: data || [],
   });
+  
+
   React.useEffect(() => {
     const messageContainer = document.getElementById("message-container");
     if (messageContainer) {
@@ -38,6 +40,8 @@ const ChatComponent = ({ chatId }: Props) => {
       });
     }
   }, [messages]);
+
+
   return (
     <div
       className="relative max-h-screen overflow-scroll"
