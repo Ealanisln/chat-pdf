@@ -7,7 +7,6 @@ import {
   RecursiveCharacterTextSplitter,
 } from "@pinecone-database/doc-splitter";
 import { getEmbeddings } from "./embeddings";
-import { convertToAscii } from "./utils";
 
 export const getPineconeClient = () => {
   return new Pinecone({

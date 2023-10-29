@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { useChat } from "ai/react";
 import { Button } from "./ui/button";
@@ -9,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Message } from "ai";
 
-type Props = { chatId: number };
+type Props = { chatId: number; apiLimitCount: number };
 
 const ChatComponent = ({ chatId }: Props) => {
   const { data, isLoading } = useQuery({
@@ -29,7 +30,8 @@ const ChatComponent = ({ chatId }: Props) => {
     },
     initialMessages: data || [],
   });
-  React.useEffect(() => {
+
+  useEffect(() => {
     const messageContainer = document.getElementById("message-container");
     if (messageContainer) {
       messageContainer.scrollTo({
@@ -38,6 +40,7 @@ const ChatComponent = ({ chatId }: Props) => {
       });
     }
   }, [messages]);
+
   return (
     <div
       className="relative max-h-screen overflow-scroll"
@@ -47,6 +50,9 @@ const ChatComponent = ({ chatId }: Props) => {
       <div className="sticky top-0 inset-x-0 p-2 bg-white h-fit">
         <h3 className="text-xl font-bold">Conversación</h3>
       </div>
+
+      {/* Loading indicator while data is loading */}
+      {isLoading && <div className="text-center py-4">Loading...</div>}
 
       {/* message list */}
       <MessageList messages={messages} isLoading={isLoading} />
