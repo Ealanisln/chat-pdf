@@ -9,13 +9,10 @@ import MessageList from "./MessageList";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Message } from "ai";
-import { useProModal } from "../../hooks/use-pro-modal";
 
 type Props = { chatId: number; apiLimitCount: number };
 
-const ChatComponent = ({ chatId, apiLimitCount }: Props) => {
-  const proModal = useProModal();
-
+const ChatComponent = ({ chatId }: Props) => {
   const { data, isLoading } = useQuery({
     queryKey: ["chat", chatId],
     queryFn: async () => {
@@ -34,7 +31,7 @@ const ChatComponent = ({ chatId, apiLimitCount }: Props) => {
     initialMessages: data || [],
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const messageContainer = document.getElementById("message-container");
     if (messageContainer) {
       messageContainer.scrollTo({
@@ -43,12 +40,6 @@ const ChatComponent = ({ chatId, apiLimitCount }: Props) => {
       });
     }
   }, [messages]);
-
-  useEffect(() => {
-    if (apiLimitCount >= 5) {
-      proModal.onOpen();
-    }
-  }, [apiLimitCount, proModal]);
 
   return (
     <div
@@ -59,6 +50,9 @@ const ChatComponent = ({ chatId, apiLimitCount }: Props) => {
       <div className="sticky top-0 inset-x-0 p-2 bg-white h-fit">
         <h3 className="text-xl font-bold">Conversación</h3>
       </div>
+
+      {/* Loading indicator while data is loading */}
+      {isLoading && <div className="text-center py-4">Loading...</div>}
 
       {/* message list */}
       <MessageList messages={messages} isLoading={isLoading} />

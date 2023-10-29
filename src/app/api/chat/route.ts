@@ -6,6 +6,7 @@ import { chats, messages as _messages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { increaseApiLimit } from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 export const runtime = "edge";
 
@@ -43,11 +44,16 @@ export async function POST(req: Request) {
       `,
     };
 
-    const freeTrial = await increaseApiLimit();
+       // Conditionally check the user's Pro status here
+       const userIsPro = await checkSubscription();
 
-    if (!freeTrial) {
-      return NextResponse.json("Free trial has expired", { status: 403 });
-    }
+       if (!userIsPro) {
+         const freeTrial = await increaseApiLimit();
+   
+         if (!freeTrial) {
+           return NextResponse.json("Free trial has expired", { status: 403 });
+         }
+       }
     
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",

@@ -20,19 +20,27 @@ export const FreeCounter = ({ apiLimitCount = 0 }: FreeCounterProps) => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (apiLimitCount >= 5) {
+      proModal.onOpen(); // Open the modal when apiLimitCount is greater than or equal to 5
+    }
+  }, [apiLimitCount]);
+
   if (!mounted) {
     return null;
   }
 
   return (
-    <div className="px-3 ">
+    <div className="px-3">
       <Card className="bg-white/10 border-0">
         <CardContent className="py-6">
           <div className="text-center text-sm text-white mb-4 space-y-2">
-            <p>{apiLimitCount} / {MAX_FREE_COUNTS} Preguntas gratis.</p>
-            <Progress 
-            className="h-3"
-            value={(apiLimitCount / MAX_FREE_COUNTS) * 100}
+            <p>
+              {apiLimitCount} / {MAX_FREE_COUNTS} Preguntas gratis.
+            </p>
+            <Progress
+              className="h-3"
+              value={(apiLimitCount / MAX_FREE_COUNTS) * 100}
             />
           </div>
           <Button onClick={proModal.onOpen} className="w-full" variant="premium">

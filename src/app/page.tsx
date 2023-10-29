@@ -31,8 +31,6 @@ export default async function Home() {
             <UserButton afterSignOutUrl="/" />
           </div>
 
-          
-
           <div className="flex py-6">
             {isAuth && firstChat && (
               <>
