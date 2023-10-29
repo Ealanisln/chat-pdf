@@ -19,9 +19,25 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
+import { useState } from "react";
+import axios from "axios";
 
 export const ProModal = () => {
   const proModal = useProModal();
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscription = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/stripe");
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const closeModal = () => {
     proModal.onClose(); // Call the onClose function to close the modal
@@ -58,7 +74,7 @@ export const ProModal = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button size="lg" variant="premium" className="w-full">
+          <Button disabled={loading} onClick={handleSubscription} size="lg" variant="premium" className="w-full ">
             Mejora a PRO ahora!
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>
