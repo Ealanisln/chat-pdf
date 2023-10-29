@@ -20,6 +20,10 @@ export const increaseApiLimit = async () => {
       .execute();
 
     if (existingUserUsage[0]) {
+      // Check if the user's usage count has exceeded the limit
+      if (existingUserUsage[0]?.usageCount >= MAX_FREE_COUNTS) {
+        return false; // Usage limit exceeded
+      }
       // User already exists, update the usage count
       const updatedUsageCount = existingUserUsage[0].usageCount + 1;
       await db
@@ -32,40 +36,10 @@ export const increaseApiLimit = async () => {
       await db.insert(userUsage).values({ userId, usageCount: 1 }).execute();
     }
 
-    return true; // Successfully increased the API limit
+    return true; // User can proceed with the API action
   } catch (error) {
     console.error("Error increasing API limit:", error);
     return false;
-  }
-};
-
-export const checkApiLimit = async () => {
-  const { userId } = auth();
-  if (!userId) {
-    return false; // Return false if there's no user ID
-  }
-
-  try {
-    const userUsageRecord = await db
-      .select()
-      .from(userUsage)
-      .where(eq(userUsage.userId, userId))
-      .limit(1)
-      .execute();
-
-    if (userUsageRecord[0]) {
-      // User exists, check if the usage count has exceeded the limit
-      if (userUsageRecord[0].usageCount >= MAX_FREE_COUNTS) {
-        return false; // Usage limit exceeded
-      } else {
-        return true; // User can proceed with the API action
-      }
-    } else {
-      return false; // User doesn't exist, so they can't proceed
-    }
-  } catch (error) {
-    console.error("Error checking API limit:", error);
-    return false; // Return false in case of an error
   }
 };
 

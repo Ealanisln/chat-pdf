@@ -46,9 +46,9 @@ export async function POST(req: Request) {
     const freeTrial = await increaseApiLimit();
 
     if (!freeTrial) {
-      return new NextResponse("Free trial has expired", { status: 403 });
+      return NextResponse.json("Free trial has expired", { status: 403 });
     }
-
+    
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
@@ -57,7 +57,6 @@ export async function POST(req: Request) {
       ],
       stream: true,
     });
-
     const stream = OpenAIStream(response, {
       onStart: async () => {
         // save user message into db
@@ -77,7 +76,5 @@ export async function POST(req: Request) {
       },
     });
     return new StreamingTextResponse(stream);
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }

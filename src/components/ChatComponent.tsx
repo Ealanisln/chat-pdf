@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { useChat } from "ai/react";
@@ -8,10 +9,13 @@ import MessageList from "./MessageList";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Message } from "ai";
+import { useProModal } from "../../hooks/use-pro-modal";
 
-type Props = { chatId: number };
+type Props = { chatId: number; apiLimitCount: number };
 
-const ChatComponent = ({ chatId }: Props) => {
+const ChatComponent = ({ chatId, apiLimitCount }: Props) => {
+  const proModal = useProModal();
+
   const { data, isLoading } = useQuery({
     queryKey: ["chat", chatId],
     queryFn: async () => {
@@ -29,7 +33,6 @@ const ChatComponent = ({ chatId }: Props) => {
     },
     initialMessages: data || [],
   });
-  
 
   React.useEffect(() => {
     const messageContainer = document.getElementById("message-container");
@@ -41,6 +44,11 @@ const ChatComponent = ({ chatId }: Props) => {
     }
   }, [messages]);
 
+  useEffect(() => {
+    if (apiLimitCount >= 5) {
+      proModal.onOpen();
+    }
+  }, [apiLimitCount, proModal]);
 
   return (
     <div

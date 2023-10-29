@@ -22,8 +22,13 @@ import { Zap } from "lucide-react";
 
 export const ProModal = () => {
   const proModal = useProModal();
+
+  const closeModal = () => {
+    proModal.onClose(); // Call the onClose function to close the modal
+  };
+  
   return (
-    <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
+    <Dialog open={proModal.isOpen} onOpenChange={closeModal}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
