@@ -2,7 +2,7 @@
 
 import { DrizzleChat } from "@/lib/db/schema";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { MessageCircle, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,17 +19,6 @@ type Props = {
 
 const ChatSideBar = ({ chats, chatId, isPro, apiLimitCount = 0 }: Props) => {
   const [loading, setLoading] = React.useState(false);
-  const handleSubscription = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get("/api/stripe");
-      window.location.href = response.data.url;
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="w-full h-screen p-4 text-gray-200 bg-gray-900">
@@ -45,7 +34,7 @@ const ChatSideBar = ({ chats, chatId, isPro, apiLimitCount = 0 }: Props) => {
           <Link key={chat.id} href={`/chat/${chat.id}`}>
             <div
               className={cn("rounded-lg p-3 text-slate-300 flex items-center", {
-                "bg-blue-600 text-white": chat.id === chatId,
+                "bg-purple-600 text-white": chat.id === chatId,
                 "hover:text-white": chat.id !== chatId,
               })}
             >
@@ -67,7 +56,9 @@ const ChatSideBar = ({ chats, chatId, isPro, apiLimitCount = 0 }: Props) => {
           <Link href="/">Inicio</Link>
           <Link href="/">Recursos</Link>
         </div>
-
+        <div className="py-4">
+          <SubscriptionButton isPro={isPro} />
+        </div>
       </div>
       
       {/* Conditionally render the FreeCounter based on the isPro flag */}
