@@ -1,5 +1,6 @@
 import ChatComponent from "@/components/ChatComponent";
 import ChatSideBar from "@/components/ChatSideBar";
+import {SheetDemo} from "@/components/MobileSideBar";
 import PDFViewer from "@/components/PDFViewer";
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
@@ -36,11 +37,11 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
     <div className="flex max-h-screen overflow-auto">
       <div className="flex w-full max-h-screen overflow-scroll">
         {/* chat sidebar */}
-        <div className="flex-[1] max-w-xs">
+        <div className="hidden md:block flex-[1] max-w-xs">
           <ChatSideBar chats={_chats} chatId={parseInt(chatId)} isPro={isPro} />
         </div>
         {/* pdf viewer */}
-        <div className="max-h-screen p-4 oveflow-scroll flex-[5]">
+        <div className="hidden md:block max-h-screen p-4 oveflow-scroll flex-[5]">
           <PDFViewer pdf_url={currentChat?.pdfUrl || ""} />
         </div>
         {/* chat component */}
