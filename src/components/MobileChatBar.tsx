@@ -15,7 +15,7 @@ type Props = {
   isPro: boolean;
 };
 
-const ChatSideBar = ({ chats, chatId, isPro }: Props) => {
+const MobileChatBar = ({ chats, chatId, isPro }: Props) => {
   const [loading, setLoading] = React.useState(false);
 
   return (
@@ -58,4 +58,4 @@ const ChatSideBar = ({ chats, chatId, isPro }: Props) => {
   );
 };
 
-export default ChatSideBar;
+export default MobileChatBar;
