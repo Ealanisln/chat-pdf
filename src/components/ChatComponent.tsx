@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { Input } from "./ui/input";
 import { useChat } from "ai/react";
@@ -40,20 +41,22 @@ const ChatComponent = ({ chatId }: Props) => {
   }, [messages]);
   return (
     <div
-      className="relative max-h-screen overflow-scroll"
+      className="relative max-h-screen overflow-scroll mt-4"
       id="message-container"
     >
       {/* header */}
-      <div className="sticky top-0 inset-x-0 p-4 bg-white h-fit">
+      <div className="sticky top-0 inset-x-0 p-4 bg-white h-fit z-10">
         <h3 className="text-xl font-bold">Conversación</h3>
       </div>
 
       {/* message list */}
       <MessageList messages={messages} isLoading={isLoading} />
 
+      {/* inout text */}
+
       <form
         onSubmit={handleSubmit}
-        className="sticky bottom-0 inset-x-0 px-2 py-6 bg-white"
+        className="sticky bottom-0 inset-x-0 px-2 py-6 bg-white z-10"
       >
         <div className="flex">
           <Input

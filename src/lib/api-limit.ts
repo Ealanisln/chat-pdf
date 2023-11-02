@@ -43,3 +43,30 @@ export const increaseApiLimit = async () => {
     return false;
   }
 };
+
+export const getApiLimitCount = async () => {
+  const { userId } = auth();
+
+  if (!userId) {
+    return 0;
+  }
+
+  try {
+    // Check if the user exists in the userUsage table
+    const existingUserUsage = await db
+      .select()
+      .from(userUsage)
+      .where(eq(userUsage.userId, userId))
+      .limit(1)
+      .execute();
+
+    if (existingUserUsage[0]) {
+      return existingUserUsage[0].usageCount;
+    } else {
+      return 0; // User doesn't exist, so the count is 0
+    }
+  } catch (error) {
+    console.error("Error retrieving API limit count:", error);
+    return 0;
+  }
+};
