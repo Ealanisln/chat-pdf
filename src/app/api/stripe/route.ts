@@ -3,27 +3,15 @@
 import { db } from "@/lib/db";
 import { userSubscriptions } from "@/lib/db/schema";
 import { stripe } from "@/lib/stripe";
+import { absoluteUrl } from "@/lib/utils";
 import { auth, currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import type { NextApiRequest, NextApiResponse } from "next";
 
+const return_url = process.env.NEXT_BASE_URL + "/";
 
-// Helper function to get the base URL dynamically
-function getBaseUrl(req: NextApiRequest) {
-  const protocol = req.headers["x-forwarded-proto"] || "http";
-  const host = req.headers.host || "localhost:3000";
-  return `${protocol}://${host}`;
-}
-
-
-export async function GET(  req: NextApiRequest,
-  res: NextApiResponse) {
+export async function GET() {
   try {
-    const baseUrl = getBaseUrl(req);
-
-    console.log(baseUrl)
-
     const { userId } = await auth();
     const user = await currentUser();
 
@@ -39,15 +27,15 @@ export async function GET(  req: NextApiRequest,
       // trying to cancel at the billing portal
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: _userSubscriptions[0].stripeCustomerId,
-        return_url: baseUrl,
+        return_url,
       });
-      return NextResponse.json({ url: stripeSession.url });
+      return new NextResponse(JSON.stringify({ url: stripeSession.url }))
     }
 
     // user's first time trying to subscribe
     const stripeSession = await stripe.checkout.sessions.create({
-      success_url: `${baseUrl}/`,
-      cancel_url: `${baseUrl}/`,
+      success_url: return_url,
+      cancel_url: return_url,
       payment_method_types: ["card"],
       mode: "subscription",
       billing_address_collection: "auto",
@@ -55,12 +43,12 @@ export async function GET(  req: NextApiRequest,
       line_items: [
         {
           price_data: {
-            currency: "USD",
+            currency: "MXN",
             product_data: {
-              name: "ChatPDF Pro",
-              description: "Unlimited PDF sessions!",
+              name: "CharlaPDF Pro",
+              description: "Obtén PDF ilimitados!",
             },
-            unit_amount: 1000,
+            unit_amount: 15000,
             recurring: {
               interval: "month",
             },
