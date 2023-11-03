@@ -8,6 +8,7 @@ import SubscriptionButton from "@/components/SubscriptionButton";
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import LandingHero from "@/components/LandingHero";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -25,17 +26,17 @@ export default async function Home() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center">
-            <h1 className="mr-3 text-5xl font-semibold">
-              ¡Conversa con cualquier PDF!
-            </h1>
-            <UserButton afterSignOutUrl="/" />
+            <LandingHero />
           </div>
+          <UserButton afterSignOutUrl="/" />
 
-          <div className="flex py-6">
+
+
+          <div className="flex py-8">
             {isAuth && firstChat && (
               <>
                 <Link href={`/chat/${firstChat.id}`}>
-                  <Button>
+                  <Button variant="outline">
                     Ir a mis conversaciones <ArrowRight className="ml-2" />
                   </Button>
                 </Link>
@@ -46,7 +47,9 @@ export default async function Home() {
             )}
           </div>
 
-          <p className="max-w-xl mt-1 text-lg text-slate-600 pb-4">
+
+
+          <p className="max-w-xl mt-1 text-lg text-slate-800 pb-4">
             Únete a millones de estudiantes, investigadores y profesionales para
             responder instantáneamente preguntas y comprender mejor la
             investigación con la ayuda de la inteligencia artificial.
@@ -58,7 +61,7 @@ export default async function Home() {
             ) : (
               <Link href="/sign-in">
                 <Button>
-                  Inicia sesion para iniciar
+                  Crea tu cuenta o inicia sesión ahora.
                   <LogIn className="w-4 h-4 ml-2" />
                 </Button>
               </Link>

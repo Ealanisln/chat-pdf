@@ -44,17 +44,17 @@ export async function POST(req: Request) {
       `,
     };
 
-       // Conditionally check the user's Pro status here
-       const userIsPro = await checkSubscription();
+    // Conditionally check the user's Pro status here
+    const userIsPro = await checkSubscription();
 
-       if (!userIsPro) {
-         const freeTrial = await increaseApiLimit();
-   
-         if (!freeTrial) {
-           return NextResponse.json("Free trial has expired", { status: 403 });
-         }
-       }
-    
+    if (!userIsPro) {
+      const freeTrial = await increaseApiLimit();
+
+      if (!freeTrial) {
+        return NextResponse.json("Free trial has expired", { status: 403 });
+      }
+    }
+
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [

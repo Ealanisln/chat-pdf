@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.441.0",
+    "@clerk/localizations": "^1.26.8",
     "@clerk/nextjs": "^4.26.2",
     "@neondatabase/serverless": "^0.6.0",
     "@pinecone-database/doc-splitter": "^0.0.1",
@@ -54,6 +55,7 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
+    "typewriter-effect": "^2.21.0",
     "zustand": "^4.4.6"
   },
   "devDependencies": {
