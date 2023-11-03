@@ -6,17 +6,16 @@ import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { MessageCircle, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import axios from "axios";
 import SubscriptionButton from "./SubscriptionButton";
-import FreeCounter from "./FreeCounter";
 
 type Props = {
   chats: DrizzleChat[];
   chatId: number;
   isPro: boolean;
-  apiLimitCount: number;
 };
 
-const ChatSideBar = ({ chats, chatId, isPro, apiLimitCount = 0 }: Props) => {
+const MobileChatBar = ({ chats, chatId, isPro }: Props) => {
   const [loading, setLoading] = React.useState(false);
 
   return (
@@ -47,11 +46,7 @@ const ChatSideBar = ({ chats, chatId, isPro, apiLimitCount = 0 }: Props) => {
       </div>
 
       <div className="fixed bottom-4 left-4">
-      <div className="pt-4">
-          <SubscriptionButton isPro={isPro} />
-        </div>
-        <div className="flex items-center gap-2 text-md text-slate-500 flex-wrap px-4 py-4">
-          
+        <div className="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
           <Link href="/">Inicio</Link>
           <Link href="/">Recursos</Link>
         </div>
@@ -59,13 +54,8 @@ const ChatSideBar = ({ chats, chatId, isPro, apiLimitCount = 0 }: Props) => {
           <SubscriptionButton isPro={isPro} />
         </div>
       </div>
-      
-      {/* Conditionally render the FreeCounter based on the isPro flag */}
-      {!isPro && (
-        <FreeCounter apiLimitCount={apiLimitCount} />
-      )}
     </div>
   );
 };
 
-export default ChatSideBar;
+export default MobileChatBar;

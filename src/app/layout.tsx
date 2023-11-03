@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Charla PDF",
+  description: "Charla PDF its a chatbot where you be able to interact with any pdf file."
 };
 
 export default function RootLayout({

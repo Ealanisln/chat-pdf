@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Message } from "ai/react";
-import { Loader2 } from "lucide-react";
 import React from "react";
+import { Loader } from "./ui/loader";
 
 type Props = {
   isLoading: boolean;
@@ -11,9 +11,9 @@ type Props = {
 const MessageList = ({ messages, isLoading }: Props) => {
   if (isLoading) {
     return (
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Loader2 className="w-6 h-6 animate-spin" />
-      </div>
+      <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
+      <Loader />
+    </div>
     );
   }
   if (!messages) return <></>;
