@@ -59,7 +59,7 @@ const ChatSideBar = ({ chats, chatId, isPro, apiLimitCount = 0 }: Props) => {
       
       {/* Conditionally render the FreeCounter based on the isPro flag */}
       {!isPro && (
-        <FreeCounter apiLimitCount={apiLimitCount} />
+        <FreeCounter apiLimitCount={apiLimitCount}  isPro={isPro} />
       )}
     </div>
   );

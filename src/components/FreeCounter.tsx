@@ -5,29 +5,27 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MAX_FREE_COUNTS } from "../../constants";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
-import { useProModal } from "../../hooks/use-pro-modal";
+import axios from "axios";
 
 interface FreeCounterProps {
+  isPro: boolean;
   apiLimitCount: number;
 }
 
-export const FreeCounter = ({ apiLimitCount = 0 }: FreeCounterProps) => {
-  const proModal = useProModal();
-  const [mounted, setMounted] = useState(false);
+export const FreeCounter = ({ apiLimitCount = 0, isPro }: FreeCounterProps) => {
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (apiLimitCount >= 5) {
-      proModal.onOpen(); // Open the modal when apiLimitCount is greater than or equal to 5
+  const handleSubscription = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("/api/stripe");
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-  }, [apiLimitCount]);
-
-  if (!mounted) {
-    return null;
-  }
+  };
 
   return (
     <div className="px-3">
@@ -38,7 +36,11 @@ export const FreeCounter = ({ apiLimitCount = 0 }: FreeCounterProps) => {
               {apiLimitCount} / {MAX_FREE_COUNTS} Preguntas gratis.
             </p>
           </div>
-          <Button onClick={proModal.onOpen} className="w-full" variant="premium">
+          <Button
+            onClick={handleSubscription}
+            className="w-full"
+            variant="premium"
+          >
             Actualiza a Pro
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>
