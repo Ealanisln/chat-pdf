@@ -3,12 +3,11 @@
 import { db } from "@/lib/db";
 import { userSubscriptions } from "@/lib/db/schema";
 import { stripe } from "@/lib/stripe";
-import { absoluteUrl } from "@/lib/utils";
 import { auth, currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-const return_url = process.env.NEXT_BASE_URL + "/";
+const return_url = process.env.NEXT_PUBLIC_BASE_URL + "/";
 
 export async function GET() {
   try {
