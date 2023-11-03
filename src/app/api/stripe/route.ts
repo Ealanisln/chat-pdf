@@ -6,11 +6,24 @@ import { stripe } from "@/lib/stripe";
 import { auth, currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-const return_url = process.env.NEXT_BASE_URL + "/";
 
-export async function GET() {
+// Helper function to get the base URL dynamically
+function getBaseUrl(req: NextApiRequest) {
+  const protocol = req.headers["x-forwarded-proto"] || "http";
+  const host = req.headers.host || "localhost:3000";
+  return `${protocol}://${host}`;
+}
+
+
+export async function GET(  req: NextApiRequest,
+  res: NextApiResponse) {
   try {
+    const baseUrl = getBaseUrl(req);
+
+    console.log(baseUrl)
+
     const { userId } = await auth();
     const user = await currentUser();
 
@@ -26,15 +39,15 @@ export async function GET() {
       // trying to cancel at the billing portal
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: _userSubscriptions[0].stripeCustomerId,
-        return_url,
+        return_url: baseUrl,
       });
       return NextResponse.json({ url: stripeSession.url });
     }
 
     // user's first time trying to subscribe
     const stripeSession = await stripe.checkout.sessions.create({
-      success_url: return_url,
-      cancel_url: return_url,
+      success_url: `${baseUrl}/`,
+      cancel_url: `${baseUrl}/`,
       payment_method_types: ["card"],
       mode: "subscription",
       billing_address_collection: "auto",
@@ -42,12 +55,12 @@ export async function GET() {
       line_items: [
         {
           price_data: {
-            currency: "MXN",
+            currency: "USD",
             product_data: {
-              name: "CharlaPDF Pro",
-              description: "Obtén PDF ilimitados!",
+              name: "ChatPDF Pro",
+              description: "Unlimited PDF sessions!",
             },
-            unit_amount: 15000,
+            unit_amount: 1000,
             recurring: {
               interval: "month",
             },
