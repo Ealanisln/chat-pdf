@@ -47,9 +47,6 @@ const ChatSideBar = ({ chats, chatId, isPro, apiLimitCount = 0 }: Props) => {
       </div>
 
       <div className="fixed bottom-4 left-4">
-      <div className="pt-4">
-          <SubscriptionButton isPro={isPro} />
-        </div>
         <div className="flex items-center gap-2 text-md text-slate-500 flex-wrap px-4 py-4">
           
           <Link href="/">Inicio</Link>
