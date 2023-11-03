@@ -23,9 +23,6 @@ const LandingHero = () => {
           />
       </div>
     </div>
-    <div className="text-sm md:text-xl font-light text-slate-600">
-      Aumenta tu rendimiento.
-    </div>
   </div>
 
 
